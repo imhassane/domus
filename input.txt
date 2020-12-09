@@ -1,0 +1,39 @@
+<PROGRAMME_DOMUS>
+	// Debut du programme.
+	// Déclaration des appareils
+	<DECLARATION_APPAREILS>
+		eclairage e1, e2, e3.
+		volet v1, v2, v3, v4.
+		chauffage rad1.
+		alarme a1.
+		fenetre fen.
+		autre_appareil(cafetiere) cafe.
+		autre_appareil(hifi) hf.
+	</DECLARATION_APPAREILS>
+
+	// Déclaration des interfaces.
+	<DECLARATION_INTERFACES>
+		interupteur b1, b2.
+		mobile t1.
+		telecommande c1.
+	</DECLARATION_INTERFACES>
+
+	// Déclaration des scénarios
+	<DECLARATION_SCENARII>
+
+	</DECLARATION_SCENARII>
+
+	// Déclaration des commandes
+	<DECLARATION_COMMANDES>
+		associer b1 = bonjour.
+		associer b2 = depart.
+		associer t1 = depart.
+		associer c1 = {noel1, noel2, noel3}.
+
+		programmer soiree = (2017, _, 1, 18, 0).
+		programmer soiree_musique = {(2017, 11, 20, 19, 30), (2017, 11, 21, 19, 30)}.
+	</DECLARATION_COMMANDES>
+
+
+</PROGRAMME_DOMUS>
+

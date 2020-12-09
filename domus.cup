@@ -1,0 +1,76 @@
+import java_cup.runtime.*;
+import java.io.*;
+import java.util.*;
+
+parser code {:
+	public static void main(String args[]) throws Exception {
+		System.out.println("Debut");
+		new parser(new Yylex(new InputStreamReader(System.in))).parse();
+	}
+:}
+
+action code {:
+	
+:}
+
+terminal String TYPE_APPAREIL, TYPE_INTERFACE;
+
+terminal String VARIABLE, OTHER_APPAREIL;
+
+terminal GREATER, LOWER, END_TAG, POINT, COMMA, OPEN_BRACKET, CLOSE_BRACKET;
+
+terminal PROGRAM_DOMUS, DECLARATION_APPAREILS, DECLARATION_INTERFACES, DECLARATION_SCENARII, DECLARATION_COMMANDES;
+
+non terminal prog_domus, declaration_appareils, declaration_interfaces, declaration_scenarii, declaration_commandes;
+
+non terminal open_domus, open_appareils, open_interfaces, open_scenarii, open_commandes;
+
+non terminal close_domus, close_appareils, close_interfaces, close_scenarii, close_commandes;
+
+non terminal declaration_variable, declaration_interface;
+
+non terminal list_variables, complex_variable;
+
+prog_domus	::= open_domus declaration_appareils declaration_interfaces declaration_scenarii declaration_commandes close_domus {: System.out.println("Analyse terminée"); :};
+
+declaration_appareils	::= open_appareils declaration_variable close_appareils;
+
+declaration_interfaces	::= open_interfaces declaration_interface close_interfaces;
+
+declaration_scenarii	::= open_scenarii close_scenarii;
+
+declaration_commandes	::= open_commandes close_commandes;
+
+declaration_variable	::= complex_variable declaration_variable
+			| complex_variable
+			| TYPE_APPAREIL list_variables POINT declaration_variable
+			| TYPE_APPAREIL list_variables POINT;
+
+declaration_interface	::= TYPE_INTERFACE list_variables POINT declaration_interface
+			| TYPE_INTERFACE list_variables POINT;
+
+list_variables		::= VARIABLE:nom COMMA {: System.out.println("\t\tvariable: " + nom); :} list_variables
+			| VARIABLE:nom {: System.out.println("\t\tvariable: " + nom); :};
+
+complex_variable	::= OTHER_APPAREIL OPEN_BRACKET TYPE_APPAREIL CLOSE_BRACKET list_variables POINT;
+
+
+open_domus	::= LOWER PROGRAM_DOMUS GREATER {: System.out.println("<debut programme>"); :};
+
+close_domus	::= END_TAG PROGRAM_DOMUS GREATER {: System.out.println("<fin programme>"); :};
+
+open_appareils	::= LOWER DECLARATION_APPAREILS GREATER {: System.out.println("\t<declaration appareils>"); :};
+
+close_appareils	::= END_TAG DECLARATION_APPAREILS GREATER {: System.out.println("\t<fin declaration appareils>"); :};
+
+open_interfaces	::= LOWER DECLARATION_INTERFACES GREATER {: System.out.println("\t<declaration interfaces>"); :};
+
+close_interfaces ::= END_TAG DECLARATION_INTERFACES GREATER {: System.out.println("\t</fin declaration interfaces>"); :};
+
+open_scenarii	::= LOWER DECLARATION_SCENARII GREATER {: System.out.println("\t<declaration scenarii>"); :};
+
+close_scenarii	::= END_TAG DECLARATION_SCENARII GREATER {: System.out.println("\t</fin declaration scenarii>"); :};
+
+open_commandes	::= LOWER DECLARATION_COMMANDES GREATER {: System.out.println("\t<declaration commandes>"); :};
+
+close_commandes	::= END_TAG DECLARATION_COMMANDES GREATER {: System.out.println("\t</fin declaration commandes>"); :};
